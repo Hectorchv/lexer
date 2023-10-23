@@ -439,10 +439,12 @@ char *yytext;
 #line 1 "lexer.l"
 #line 2 "lexer.l"
 #include<stdio.h>
-int pos_num, pos_cade, pos_ident = 0;
 
-#line 444 "lex.yy.c"
-#line 445 "lex.yy.c"
+int pos_num = 0;
+int pos_cade = 0;
+int pos_ident = 0;
+#line 446 "lex.yy.c"
+#line 447 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -659,51 +661,50 @@ YY_DECL
 		}
 
 	{
-#line 11 "lexer.l"
+#line 12 "lexer.l"
 
-#line 13 "lexer.l"
-    "cadena"      printf("(0,0)\n");
-    "caracter"    printf("(0,1)\n");
-    "else"        printf("(0,2)\n");
-    "entero"      printf("(0,3)\n");
-    "for"         printf("(0,4)\n");
-    "if"          printf("(0,5)\n");
-    "real"        printf("(0,6)\n");
-    "return"      printf("(0,7)\n");
-    "void"        printf("(0,8)\n");
-    "while"       printf("(0,9)\n");
+#line 14 "lexer.l"
+    "cadena"      {printf("(0,0)\n");}
+    "caracter"    {printf("(0,1)\n");}
+    "else"        {printf("(0,2)\n");}
+    "entero"      {printf("(0,3)\n");}
+    "for"         {printf("(0,4)\n");}
+    "if"          {printf("(0,5)\n");}
+    "real"        {printf("(0,6)\n");}
+    "return"      {printf("(0,7)\n");}
+    "void"        {printf("(0,8)\n");}
+    "while"       {printf("(0,9)\n");}
 
-    "+"|"-"|"*"|"/"|"$"   printf("(1,%s)\n",yytext);
+    "+"|"-"|"*"|"/"|"$"   {printf("(1,%s)\n",yytext);}
     
-    "~"         printf("(2,0)\n");
-    "+~"        printf("(2,1)\n");
-    "-~"        printf("(2,2)\n");
-    "*~"        printf("(2,3)\n");
-    "/~"        printf("(2,4)\n");
-    "$~"        printf("(2,5)\n");
+    "~"         {printf("(2,0)\n");}
+    "+~"        {printf("(2,1)\n");}
+    "-~"        {printf("(2,2)\n");}
+    "*~"        {printf("(2,3)\n");}
+    "/~"        {printf("(2,4)\n");}
+    "$~"        {printf("(2,5)\n");}
 
-    (|)|{|}|[|]|&|,|: printf("(3,%s)\n",yytext);
+    "("|")"|"{"|"}"|"["|"]"|&|,|: {printf("(3,%s)\n",yytext);}
 
-    "^^"        printf("(4,0)\n");
-    "^\""       printf("(4,1)\n");
-    "=="        printf("(4,2)\n");
-    "^^="       printf("(4,3)\n");
-    "^\"="      printf("(4,4)\n");
-    "<>"        printf("(4,5)\n");
+    "^^"        {printf("(4,0)\n");}
+    "^\""       {printf("(4,1)\n");}
+    "=="        {printf("(4,2)\n");}
+    "^^="       {printf("(4,3)\n");}
+    "^\"="      {printf("(4,4)\n");}
+    "<>"        {printf("(4,5)\n");}
 
-    "\"{ident}\""
-    
-    {entero}   
+      
+    {ENTERO}   
 
-    {real}
+    {REAL}
 
-    {cadena}
+    {CADENA}
 
-    {caracter}
+    .
 
     .+          {printf("%s no reconocido", yytext);}
     
-#line 706 "lex.yy.c"
+#line 707 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -765,7 +766,7 @@ YY_RULE_SETUP
 #line 54 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 768 "lex.yy.c"
+#line 769 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1784,8 +1785,5 @@ int main(int argc, char **argv)
         printf("Sin archivo de entrada\n");
         return 1;
     }
-
     yyin = file;
-    yylex();
-
 }

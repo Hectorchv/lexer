@@ -1,14 +1,14 @@
 %{
 #include<stdio.h>
 
-int pos_num, pos_cade, pos_ident = 0;
-//#include"lista.h"
+int pos_num = 0;
+int pos_cade = 0;
+int pos_ident = 0;
 %}
-entero  (+|-)?[1-9][0-9]{0,5}
-real    [0-9]*\.[0-9]*
-cadena  [^\"]{0-38}
-ident [a-zA-Z]?([a-zA-Z]*[0-9]){,5}_
-caracter .
+ENTERO  (+|-)?[1-9][0-9]{0,5}
+REAL    [0-9]*"."[0-9]*
+CADENA  """[^"]{0-38}"""
+IDENT   [a-zA-Z]([a-zA-Z]*[0-9]){0,4}[_]
 %%
     "cadena"      {printf("(0,0)\n");}
     "caracter"    {printf("(0,1)\n");}
@@ -30,7 +30,7 @@ caracter .
     "/~"        {printf("(2,4)\n");}
     "$~"        {printf("(2,5)\n");}
 
-    (|)|{|}|[|]|&|,|: {printf("(3,%s)\n",yytext);}
+    "("|")"|"{"|"}"|"["|"]"|&|,|: {printf("(3,%s)\n",yytext);}
 
     "^^"        {printf("(4,0)\n");}
     "^\""       {printf("(4,1)\n");}
@@ -39,15 +39,14 @@ caracter .
     "^\"="      {printf("(4,4)\n");}
     "<>"        {printf("(4,5)\n");}
 
-    "\"{ident}\""
-    
-    {entero}   
+      
+    {ENTERO}   
 
-    {real}
+    {REAL}
 
-    {cadena}
+    {CADENA}
 
-    {caracter}
+    .
 
     .+          {printf("%s no reconocido", yytext);}
     
@@ -64,7 +63,5 @@ int main(int argc, char **argv)
         printf("Sin archivo de entrada\n");
         return 1;
     }
-
     yyin = file;
-
 }
