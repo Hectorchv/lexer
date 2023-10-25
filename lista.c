@@ -1,3 +1,9 @@
+/*
+    Programa realizado por Chavez Mejia Luis Hector
+    
+    Implementación de las estructuras
+    y las funciones necesarias
+*/
 #include<stdio.h>
 #include<stdlib.h>
 #include<assert.h>
@@ -8,6 +14,8 @@
 int pos_num = 0;
 int pos_cade = 0;
 int pos_ident = 0;
+
+FILE *salida;
 
 t_error *errores_i = NULL, *errores_f = NULL;
 t_token *tokens_i = NULL, *tokens_f = NULL;
@@ -111,12 +119,14 @@ int add_t_ident(char *nombre)
     return ind;
 }
 
-void add_t_error(char error[128])
+void add_t_error(char *error)
 {
-    if (error[0] != '\0')
+    if (error != NULL)
     {
         t_error *tmp = malloc(sizeof(t_error));
         assert(tmp != NULL);
+        tmp->cadena = malloc(sizeof(char)*strlen(error));
+        assert(tmp->cadena != NULL);
         strncpy(tmp->cadena,error,strlen(error));
         tmp->next = NULL;
         if (errores_i == NULL)
@@ -126,8 +136,7 @@ void add_t_error(char error[128])
             errores_f->next = tmp;
             errores_f = tmp;
         }
-
-        error[0] = '\0';
+        error = NULL;
     }
 }
 
@@ -136,9 +145,11 @@ void imp_errores()
     t_error *tmp = errores_i;
 
     printf("Errores: \n");
+    fprintf(salida, "Errores: \n");
     while (tmp != NULL)
     {
         printf("\t%s no reconocido\n", tmp->cadena);
+        fprintf(salida, "\t%s no reconocido\n", tmp->cadena);
         tmp =  tmp->next;
     }
 }
@@ -147,9 +158,11 @@ void imp_t_numerica()
 {
     t_numerica *tmp = numerica_i;
     printf("Tabla de literales(numericas)\n");
+    fprintf(salida, "Tabla de literales(numericas)\n");
     while (tmp != NULL)
     {
         printf("\t%d %f\n",tmp->pos, tmp->valor);
+        fprintf(salida, "\t%d %f\n",tmp->pos, tmp->valor);
         tmp = tmp->next;
     }
 }
@@ -158,9 +171,11 @@ void imp_t_cadena()
 {
     t_cadena *tmp = cadenas_i;
     printf("Tabla de literales(cadenas)\n");
+    fprintf(salida, "Tabla de literales(cadenas)\n");
     while (tmp != NULL)
     {
         printf("\t%d %s\n",tmp->pos,tmp->valor);
+        fprintf(salida, "\t%d %s\n",tmp->pos,tmp->valor);
         tmp = tmp->next;
     }
 }
@@ -169,6 +184,7 @@ void imp_t_ident()
 {
     t_ident *tmp = ident_i;
     printf("Tabla de simbolos\n");
+    fprintf(salida, "Tabla de simbolos\n");
     while (tmp != NULL)
     {
         printf("\t%d %s\n", tmp->pos, tmp->nombre);
@@ -180,12 +196,35 @@ void imp_t_token()
 {
     t_token *tmp = tokens_i;
     printf("Tokens\n");
+    fprintf(salida, "Tokens\n");
     while (tmp != NULL)
     {
         if(tmp->clase == 1 || tmp->clase == 3)
+        {
             printf("(%d,%c)\n", tmp->clase, tmp->valor);
+            fprintf(salida, "(%d,%c)\n", tmp->clase, tmp->valor);
+        }
         else
+        {
             printf("(%d,%d)\n", tmp->clase, tmp->valor);
+            fprintf(salida, "(%d,%d)\n", tmp->clase, tmp->valor);
+        }
         tmp = tmp->next;
     }
+}
+
+void open_file(char *archivo)
+{
+    if(archivo == NULL)
+        printf("--Sin archivo de salida--\n");
+    else
+    {
+        salida = fopen(archivo, "w+");
+        assert(archivo != NULL);
+    }
+}
+
+void close_file()
+{
+    fclose(salida);
 }
