@@ -42,15 +42,23 @@ typedef struct tok
     struct tok *next;
 } t_token;
 
+typedef struct l_tok
+{
+    t_token *inicio, *fin;
+} l_token;
 
 
-
-void addtoken(int, int );
+int bus_t_ident(char *);
+void add_t_token(int, int);
+int add_t_numerica(float);
+int add_t_cadena(char *);
+int add_t_ident(char *);
 void add_t_error( char [128]);
-void add_t_numerica(unsigned , float);
-void add_t_cadena(unsigned, char *);
-void add_t_ident(unsigned, char *, int);
 
 void imp_errores();
+void imp_t_numerica();
+void imp_t_cadena();
+void imp_t_ident();
+void imp_t_token();
 
 #endif
