@@ -10,6 +10,13 @@ typedef struct num
     struct num *next;
 } t_numerica;
 
+typedef struct error
+{
+    char cadena[128];
+    struct error *next;
+} t_error;
+
+
 //Tabla de cadenas
 typedef struct cad
 {
@@ -36,14 +43,14 @@ typedef struct tok
 } t_token;
 
 
-int addtoken(int clase, int valor);
-
-int add_t_numerica(t_numerica *tabla, float valor);
-int add_t_cadena(t_cadena *tabla, char *valor);
-int add_t_ident(t_ident *tabla, char *nombre, int tipo);
 
 
+void addtoken(int, int );
+void add_t_error( char [128]);
+void add_t_numerica(unsigned , float);
+void add_t_cadena(unsigned, char *);
+void add_t_ident(unsigned, char *, int);
 
-
+void imp_errores();
 
 #endif
